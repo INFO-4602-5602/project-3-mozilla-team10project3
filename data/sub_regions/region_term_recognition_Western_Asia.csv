@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Western Asia,VPN,0.6603
-Western Asia,DDOS,0.3933
-Western Asia,IOT,0.3307
-Western Asia,Connected Devices,0.6916
-Western Asia,Botnet,0.2883
-Western Asia,Blockchain,0.1989
-Western Asia,RFID,0.2994
-Western Asia,Zero Day,0.2145
-Western Asia,TOR,0.4279
+Western Asia,0,0.6603
+Western Asia,1,0.3933
+Western Asia,2,0.3307
+Western Asia,3,0.6916
+Western Asia,4,0.2883
+Western Asia,5,0.1989
+Western Asia,6,0.2994
+Western Asia,7,0.2145
+Western Asia,8,0.4279

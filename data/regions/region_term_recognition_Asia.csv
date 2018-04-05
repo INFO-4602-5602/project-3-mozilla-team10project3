@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Asia,VPN,0.4273
-Asia,DDOS,0.2197
-Asia,IOT,0.2814
-Asia,Connected Devices,0.5285
-Asia,Botnet,0.1772
-Asia,Blockchain,0.1320
-Asia,RFID,0.2198
-Asia,Zero Day,0.1263
-Asia,TOR,0.2405
+Asia,0,0.4273
+Asia,1,0.2197
+Asia,2,0.2814
+Asia,3,0.5285
+Asia,4,0.1772
+Asia,5,0.1320
+Asia,6,0.2198
+Asia,7,0.1263
+Asia,8,0.2405

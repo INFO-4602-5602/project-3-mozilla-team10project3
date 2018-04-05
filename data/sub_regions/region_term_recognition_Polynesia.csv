@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Polynesia,VPN,0.4839
-Polynesia,DDOS,0.2258
-Polynesia,IOT,0.1505
-Polynesia,Connected Devices,0.7204
-Polynesia,Botnet,0.2151
-Polynesia,Blockchain,0.1505
-Polynesia,RFID,0.1828
-Polynesia,Zero Day,0.1505
-Polynesia,TOR,0.2903
+Polynesia,0,0.4839
+Polynesia,1,0.2258
+Polynesia,2,0.1505
+Polynesia,3,0.7204
+Polynesia,4,0.2151
+Polynesia,5,0.1505
+Polynesia,6,0.1828
+Polynesia,7,0.1505
+Polynesia,8,0.2903

@@ -74,7 +74,8 @@ def create_region_csvs(csv_file, region, dic):
     for i, key in enumerate(keys):
         out = vals[i] / dic[region]
         csv_file.write("%s" % (region))
-        csv_file.write(",%s" % (key))
+        #csv_file.write(",%s" % (key))
+        csv_file.write(",%i" % (i))
         csv_file.write(",%.4f" % (out))
         csv_file.write("\n")
 

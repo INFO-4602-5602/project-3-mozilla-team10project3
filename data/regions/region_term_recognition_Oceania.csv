@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Oceania,VPN,0.5979
-Oceania,DDOS,0.3303
-Oceania,IOT,0.2887
-Oceania,Connected Devices,0.7722
-Oceania,Botnet,0.2932
-Oceania,Blockchain,0.2048
-Oceania,RFID,0.3472
-Oceania,Zero Day,0.2072
-Oceania,TOR,0.3373
+Oceania,0,0.5979
+Oceania,1,0.3303
+Oceania,2,0.2887
+Oceania,3,0.7722
+Oceania,4,0.2932
+Oceania,5,0.2048
+Oceania,6,0.3472
+Oceania,7,0.2072
+Oceania,8,0.3373

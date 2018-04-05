@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Africa,VPN,0.4135
-Africa,DDOS,0.1796
-Africa,IOT,0.1734
-Africa,Connected Devices,0.5464
-Africa,Botnet,0.1469
-Africa,Blockchain,0.1213
-Africa,RFID,0.1283
-Africa,Zero Day,0.1167
-Africa,TOR,0.2109
+Africa,0,0.4135
+Africa,1,0.1796
+Africa,2,0.1734
+Africa,3,0.5464
+Africa,4,0.1469
+Africa,5,0.1213
+Africa,6,0.1283
+Africa,7,0.1167
+Africa,8,0.2109

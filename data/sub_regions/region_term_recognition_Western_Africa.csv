@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Western Africa,VPN,0.4238
-Western Africa,DDOS,0.1443
-Western Africa,IOT,0.1665
-Western Africa,Connected Devices,0.5964
-Western Africa,Botnet,0.1302
-Western Africa,Blockchain,0.1241
-Western Africa,RFID,0.0999
-Western Africa,Zero Day,0.0989
-Western Africa,TOR,0.1645
+Western Africa,0,0.4238
+Western Africa,1,0.1443
+Western Africa,2,0.1665
+Western Africa,3,0.5964
+Western Africa,4,0.1302
+Western Africa,5,0.1241
+Western Africa,6,0.0999
+Western Africa,7,0.0989
+Western Africa,8,0.1645

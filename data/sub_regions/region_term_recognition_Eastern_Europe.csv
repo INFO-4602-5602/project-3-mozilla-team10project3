@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Eastern Europe,VPN,0.7306
-Eastern Europe,DDOS,0.5999
-Eastern Europe,IOT,0.4835
-Eastern Europe,Connected Devices,0.7766
-Eastern Europe,Botnet,0.4856
-Eastern Europe,Blockchain,0.3484
-Eastern Europe,RFID,0.4001
-Eastern Europe,Zero Day,0.3793
-Eastern Europe,TOR,0.6049
+Eastern Europe,0,0.7306
+Eastern Europe,1,0.5999
+Eastern Europe,2,0.4835
+Eastern Europe,3,0.7766
+Eastern Europe,4,0.4856
+Eastern Europe,5,0.3484
+Eastern Europe,6,0.4001
+Eastern Europe,7,0.3793
+Eastern Europe,8,0.6049

@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Western Europe,VPN,0.5606
-Western Europe,DDOS,0.3649
-Western Europe,IOT,0.2270
-Western Europe,Connected Devices,0.7873
-Western Europe,Botnet,0.3400
-Western Europe,Blockchain,0.1943
-Western Europe,RFID,0.3141
-Western Europe,Zero Day,0.2067
-Western Europe,TOR,0.4397
+Western Europe,0,0.5606
+Western Europe,1,0.3649
+Western Europe,2,0.2270
+Western Europe,3,0.7873
+Western Europe,4,0.3400
+Western Europe,5,0.1943
+Western Europe,6,0.3141
+Western Europe,7,0.2067
+Western Europe,8,0.4397
