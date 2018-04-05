@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Southern Asia,VPN,0.3826
-Southern Asia,DDOS,0.1792
-Southern Asia,IOT,0.2876
-Southern Asia,Connected Devices,0.4965
-Southern Asia,Botnet,0.1602
-Southern Asia,Blockchain,0.1213
-Southern Asia,RFID,0.1947
-Southern Asia,Zero Day,0.1105
-Southern Asia,TOR,0.2074
+Southern Asia,0,0.3826
+Southern Asia,1,0.1792
+Southern Asia,2,0.2876
+Southern Asia,3,0.4965
+Southern Asia,4,0.1602
+Southern Asia,5,0.1213
+Southern Asia,6,0.1947
+Southern Asia,7,0.1105
+Southern Asia,8,0.2074

@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-South-Eastern Asia,VPN,0.4306
-South-Eastern Asia,DDOS,0.2396
-South-Eastern Asia,IOT,0.2187
-South-Eastern Asia,Connected Devices,0.5366
-South-Eastern Asia,Botnet,0.1657
-South-Eastern Asia,Blockchain,0.1179
-South-Eastern Asia,RFID,0.2373
-South-Eastern Asia,Zero Day,0.1153
-South-Eastern Asia,TOR,0.2403
+South-Eastern Asia,0,0.4306
+South-Eastern Asia,1,0.2396
+South-Eastern Asia,2,0.2187
+South-Eastern Asia,3,0.5366
+South-Eastern Asia,4,0.1657
+South-Eastern Asia,5,0.1179
+South-Eastern Asia,6,0.2373
+South-Eastern Asia,7,0.1153
+South-Eastern Asia,8,0.2403

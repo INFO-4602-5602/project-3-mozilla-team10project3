@@ -1,10 +1,10 @@
 Region,Term,Recognition_Rate
-Northern Africa,VPN,0.3359
-Northern Africa,DDOS,0.1613
-Northern Africa,IOT,0.1207
-Northern Africa,Connected Devices,0.4398
-Northern Africa,Botnet,0.1227
-Northern Africa,Blockchain,0.0961
-Northern Africa,RFID,0.0969
-Northern Africa,Zero Day,0.1078
-Northern Africa,TOR,0.1926
+Northern Africa,0,0.3359
+Northern Africa,1,0.1613
+Northern Africa,2,0.1207
+Northern Africa,3,0.4398
+Northern Africa,4,0.1227
+Northern Africa,5,0.0961
+Northern Africa,6,0.0969
+Northern Africa,7,0.1078
+Northern Africa,8,0.1926
