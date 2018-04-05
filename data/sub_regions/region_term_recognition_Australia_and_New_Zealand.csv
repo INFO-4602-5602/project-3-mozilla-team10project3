@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Australia and New Zealand,VPN,0.6068
+Australia and New Zealand,DDOS,0.3419
+Australia and New Zealand,IOT,0.3028
+Australia and New Zealand,Connected Devices,0.7728
+Australia and New Zealand,Botnet,0.3028
+Australia and New Zealand,Blockchain,0.2110
+Australia and New Zealand,RFID,0.3600
+Australia and New Zealand,Zero Day,0.2140
+Australia and New Zealand,TOR,0.3432

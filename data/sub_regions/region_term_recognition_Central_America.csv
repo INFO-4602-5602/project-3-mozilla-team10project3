@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Central America,VPN,0.5429
+Central America,DDOS,0.2775
+Central America,IOT,0.2067
+Central America,Connected Devices,0.7438
+Central America,Botnet,0.2011
+Central America,Blockchain,0.1462
+Central America,RFID,0.1417
+Central America,Zero Day,0.2074
+Central America,TOR,0.3361

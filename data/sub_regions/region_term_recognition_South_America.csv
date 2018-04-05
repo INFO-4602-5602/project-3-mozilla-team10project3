@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+South America,VPN,0.4832
+South America,DDOS,0.2633
+South America,IOT,0.1979
+South America,Connected Devices,0.7152
+South America,Botnet,0.1796
+South America,Blockchain,0.1337
+South America,RFID,0.1372
+South America,Zero Day,0.1371
+South America,TOR,0.3072

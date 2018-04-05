@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Caribbean,VPN,0.5119
+Caribbean,DDOS,0.2622
+Caribbean,IOT,0.1995
+Caribbean,Connected Devices,0.7265
+Caribbean,Botnet,0.1819
+Caribbean,Blockchain,0.1368
+Caribbean,RFID,0.1731
+Caribbean,Zero Day,0.1706
+Caribbean,TOR,0.2911

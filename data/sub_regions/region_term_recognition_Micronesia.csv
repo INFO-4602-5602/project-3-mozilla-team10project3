@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Micronesia,VPN,0.6000
+Micronesia,DDOS,0.2000
+Micronesia,IOT,0.0000
+Micronesia,Connected Devices,0.6000
+Micronesia,Botnet,0.2000
+Micronesia,Blockchain,0.4000
+Micronesia,RFID,0.4000
+Micronesia,Zero Day,0.2000
+Micronesia,TOR,0.4000

@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Northern Europe,VPN,0.6477
+Northern Europe,DDOS,0.4426
+Northern Europe,IOT,0.3872
+Northern Europe,Connected Devices,0.7967
+Northern Europe,Botnet,0.4083
+Northern Europe,Blockchain,0.2490
+Northern Europe,RFID,0.3739
+Northern Europe,Zero Day,0.2645
+Northern Europe,TOR,0.4447

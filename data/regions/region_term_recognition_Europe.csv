@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Europe,VPN,0.5457
+Europe,DDOS,0.3507
+Europe,IOT,0.2408
+Europe,Connected Devices,0.7882
+Europe,Botnet,0.3064
+Europe,Blockchain,0.1840
+Europe,RFID,0.2797
+Europe,Zero Day,0.1975
+Europe,TOR,0.4085

@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Southern Europe,VPN,0.4924
+Southern Europe,DDOS,0.2982
+Southern Europe,IOT,0.2295
+Southern Europe,Connected Devices,0.7887
+Southern Europe,Botnet,0.2189
+Southern Europe,Blockchain,0.1467
+Southern Europe,RFID,0.1947
+Southern Europe,Zero Day,0.1613
+Southern Europe,TOR,0.3371

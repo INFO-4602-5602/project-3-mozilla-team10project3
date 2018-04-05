@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Melanesia,VPN,0.5029
+Melanesia,DDOS,0.1886
+Melanesia,IOT,0.1257
+Melanesia,Connected Devices,0.7943
+Melanesia,Botnet,0.1714
+Melanesia,Blockchain,0.1200
+Melanesia,RFID,0.2114
+Melanesia,Zero Day,0.1200
+Melanesia,TOR,0.2571

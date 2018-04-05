@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Americas,VPN,0.5247
+Americas,DDOS,0.2940
+Americas,IOT,0.2379
+Americas,Connected Devices,0.7362
+Americas,Botnet,0.2381
+Americas,Blockchain,0.1529
+Americas,RFID,0.2610
+Americas,Zero Day,0.1844
+Americas,TOR,0.3192

@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Southern Africa,VPN,0.6267
+Southern Africa,DDOS,0.3404
+Southern Africa,IOT,0.3559
+Southern Africa,Connected Devices,0.7814
+Southern Africa,Botnet,0.3056
+Southern Africa,Blockchain,0.2689
+Southern Africa,RFID,0.3075
+Southern Africa,Zero Day,0.2263
+Southern Africa,TOR,0.3694

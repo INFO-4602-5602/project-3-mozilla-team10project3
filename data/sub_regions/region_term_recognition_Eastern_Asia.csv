@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Eastern Asia,VPN,0.7342
+Eastern Asia,DDOS,0.4630
+Eastern Asia,IOT,0.4849
+Eastern Asia,Connected Devices,0.7205
+Eastern Asia,Botnet,0.3260
+Eastern Asia,Blockchain,0.2849
+Eastern Asia,RFID,0.4027
+Eastern Asia,Zero Day,0.3068
+Eastern Asia,TOR,0.4521
