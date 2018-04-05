@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+,VPN,0.8926
+,DDOS,0.4341
+,IOT,0.3479
+,Connected Devices,1.2317
+,Botnet,0.3069
+,Blockchain,0.2597
+,RFID,0.2850
+,Zero Day,0.2840
+,TOR,0.4960

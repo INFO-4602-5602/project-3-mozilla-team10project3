@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Middle Africa,VPN,0.4820
+Middle Africa,DDOS,0.1237
+Middle Africa,IOT,0.1031
+Middle Africa,Connected Devices,0.6108
+Middle Africa,Botnet,0.0928
+Middle Africa,Blockchain,0.0593
+Middle Africa,RFID,0.0902
+Middle Africa,Zero Day,0.0825
+Middle Africa,TOR,0.1727

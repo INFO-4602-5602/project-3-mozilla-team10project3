@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Eastern Africa,VPN,0.4663
+Eastern Africa,DDOS,0.2004
+Eastern Africa,IOT,0.2495
+Eastern Africa,Connected Devices,0.6247
+Eastern Africa,Botnet,0.1646
+Eastern Africa,Blockchain,0.1309
+Eastern Africa,RFID,0.1595
+Eastern Africa,Zero Day,0.1135
+Eastern Africa,TOR,0.2372

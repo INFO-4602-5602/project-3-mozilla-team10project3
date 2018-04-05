@@ -30,9 +30,9 @@ fieldnames.append("Region")
 fieldnames.append("Sub-Region")
 #print(fieldnames)
 
-csv_file_read = open('../20171013111831-SurveyExport_TruncatedFields.csv', newline='', errors='ignore')
+csv_file_read = open('../data/20171013111831-SurveyExport_TruncatedFields.csv', newline='', errors='ignore')
 reader = csv.DictReader(csv_file_read)
-with open("../20171013111831-SurveyExport_TruncatedFields_Region.csv", "w") as csv_file:
+with open("../data/20171013111831-SurveyExport_TruncatedFields_Region.csv", "w") as csv_file:
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
     for line in reader:
@@ -45,6 +45,9 @@ with open("../20171013111831-SurveyExport_TruncatedFields_Region.csv", "w") as c
             line['Sub-Region'] = country2subregion[country]
         writer.writerow(line)
         #print(line)
+
+print(len(set(country2region.values())))
+print(set(country2region.values()))
 
 #print(oov)
 #for k, v in sorted(country_dic.items(), key=lambda x:x[1]):

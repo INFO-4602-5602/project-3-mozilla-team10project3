@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Central Asia,VPN,0.8333
+Central Asia,DDOS,0.6667
+Central Asia,IOT,0.5833
+Central Asia,Connected Devices,0.6667
+Central Asia,Botnet,0.5000
+Central Asia,Blockchain,0.3333
+Central Asia,RFID,0.4167
+Central Asia,Zero Day,0.3333
+Central Asia,TOR,0.5000

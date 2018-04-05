@@ -1,0 +1,10 @@
+Region,Term,Recognition_Rate
+Northern America,VPN,0.5582
+Northern America,DDOS,0.3301
+Northern America,IOT,0.2882
+Northern America,Connected Devices,0.7538
+Northern America,Botnet,0.3085
+Northern America,Blockchain,0.1740
+Northern America,RFID,0.4235
+Northern America,Zero Day,0.2217
+Northern America,TOR,0.3254
