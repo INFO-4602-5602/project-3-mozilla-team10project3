@@ -27,8 +27,50 @@
   <script type="text/javascript">
 
     var data_file_names = [
-      
+      '../data/regions/region_term_recognition_Africa.csv',
+      '../data/regions/region_term_recognition_Americas.csv',
+      '../data/regions/region_term_recognition_Asia.csv',
+      '../data/regions/region_term_recognition_Europe.csv',
+      '../data/regions/region_term_recognition_Oceania.csv'
     ];
+
+    var region_names = {
+      0: "Africa",
+      1: "Americas",
+      2: "Asia",
+      3: "Europe",
+      4: "Oceania"
+    };
+
+    var region_data = {
+      "Africa": [],
+      "Americas": [],
+      "Asia": [],
+      "Europe": [],
+      "Oceania": []
+    };
+
+    d3.csv(data_file_names[0], function(error, data) {
+      region_data[region_names[0]] = data;
+    });
+
+    d3.csv(data_file_names[1], function(error, data) {
+      region_data[region_names[1]] = data;
+    });
+
+    d3.csv(data_file_names[2], function(error, data) {
+      region_data[region_names[2]] = data;
+    });
+
+    d3.csv(data_file_names[3], function(error, data) {
+      region_data[region_names[3]] = data;
+    });
+
+    d3.csv(data_file_names[4], function(error, data) {
+      region_data[region_names[4]] = data;
+    });
+
+    var active_regions = [0, 1, 2, 3, 4];
 
     // Setting up the graph dimensions and margins
     var margin = {top: 30, right: 30, bottom: 60, left: 60};
@@ -48,25 +90,8 @@
                               .y(function(d) { return y(d.Recognition_Rate); })
                               .curve(d3.curveLinear);
 
-    var region_data = {};
-
-    for (var i = 0; i < data_file_names.length, i++) {
-    	d3.csv(data_file_names[i], function(error, data) {
-    		region_data[data_file_names[i]] = data;
-    	});
-    }
-
-    var active_regions = [
-      'region1',
-      'region2',
-      'region3',
-      'region4',
-      'region5',
-      'region6'
-    ];
-
     // Adding padding for the axes
-    x.domain(region_data[active_regions[0]].values.map(function (d) { return d.Term; }));
+    x.domain(d3.extent(region_data[region_names[active_regions[0]]], function(d) { return parseInt(d.Term); }));
     y.domain([0, 1]);
 
     // Initializing svg
@@ -81,7 +106,7 @@
     for (var i = 0; i < active_regions.length; i++) {
       svg.append('path')
               .attr('class', 'line')
-              .attr('d', line_function(region_data[active_regions[i]]))
+              .attr('d', line_function(region_data[region_names[active_regions[i]]]))
               .style('stroke', '#00D')
               .style('stroke-width', '4');
     }
