@@ -1,0 +1,154 @@
+<html>
+
+<head>
+  <title>Project 3</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+  <link rel="stylesheet" type="text/css" href="project3.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="d3-legend.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-2"></div>
+
+      <div class="col-xs-8" style="margin: 0 auto">
+        <div id="vis-1"></div>
+      </div>
+
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+    var data_file_names = [
+      
+    ];
+
+    // Setting up the graph dimensions and margins
+    var margin = {top: 30, right: 30, bottom: 60, left: 60};
+    var width = 800 - margin.left - margin.right;
+    var height = 600 - margin.top - margin.bottom;
+
+    // Setting the ranges
+    var x = d3.scaleLinear().range([0, width]);
+    var y = d3.scaleLinear().range([height, 0]);
+
+    var x_axis = d3.axisBottom(x);
+    var y_axis = d3.axisLeft(y);
+
+    // Setting up the line function
+    var line_function = d3.line()
+                              .x(function(d) { return x(d.Term); })
+                              .y(function(d) { return y(d.Recognition_Rate); })
+                              .curve(d3.curveLinear);
+
+    var region_data = {};
+
+    for (var i = 0; i < data_file_names.length, i++) {
+    	d3.csv(data_file_names[i], function(error, data) {
+    		region_data[data_file_names[i]] = data;
+    	});
+    }
+
+    var active_regions = [
+      'region1',
+      'region2',
+      'region3',
+      'region4',
+      'region5',
+      'region6'
+    ];
+
+    // Adding padding for the axes
+    x.domain(region_data[active_regions[0]].values.map(function (d) { return d.Term; }));
+    y.domain([0, 1]);
+
+    // Initializing svg
+    var svg = d3.select('#vis-1')
+                     .append('svg')
+                       .attr('width', width + margin.left + margin.right)
+                       .attr('height', height + margin.top + margin.bottom)
+                     .append('g')
+                       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    // Rendering everything
+    for (var i = 0; i < active_regions.length; i++) {
+      svg.append('path')
+              .attr('class', 'line')
+              .attr('d', line_function(region_data[active_regions[i]]))
+              .style('stroke', '#00D')
+              .style('stroke-width', '4');
+    }
+
+    svg.append('g')
+              .attr('transform', 'translate(0, ' + height + ')')
+              .attr('class', 'x-axis')
+              .call(x_axis);
+
+    svg.append('g')
+              .attr('class', 'y-axis')
+              .call(y_axis);
+
+    svg.append('text')
+              .attr('class', 'label')
+              .text('Technical Term')
+              .attr('x', (width/2))
+              .attr('y', height + 40)
+              .style('fill', '#090');
+
+    svg.append('text')
+              .attr('class', 'label')
+              .text('Recognition Rate')
+              .attr('transform', 'rotate(-90)')
+              .attr('x', -(height/2))
+              .attr('y', -50)
+              .style('fill', '#090');
+
+    var ordinal = d3.scaleOrdinal()
+                      .domain(['1', '2'])
+                      .range(['#00D', '#0D0']);
+
+    svg.append('g')
+              .attr('class', 'legendOrdinal')
+              .attr('transform', 'translate(20,7)');
+
+    var legendOrdinal = d3.legendColor()
+                            .shape('path', d3.symbol().type(d3.symbolSquare).size(150)())
+                            .shapePadding(5)
+                            .scale(ordinal);
+
+    svg.select('.legendOrdinal')
+              .call(legendOrdinal);
+
+    function change_active_regions(regions) {
+
+        // Rescaling the axes
+        x.domain(region_data[0].values.map(function (d) { return d.day; }));
+        y.domain([0, 1]);
+
+        var svg = d3.select('#vis-1').transition();
+
+        // loop
+        svg.select('.line')
+             .duration(1000)
+             .attr('d', line_function_females(data));
+
+        svg.select('.x-axis')
+             .duration(1000)
+             .call(x_axis);
+        svg.select('.y-axis')
+             .duration(1000)
+             .call(y_axis);
+
+    }
+
+  </script>
+</body>
+
+</html>
