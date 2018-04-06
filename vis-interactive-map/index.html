@@ -17,39 +17,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script src="./datamaps.world.hires.min.js"></script>
 <style type="text/css">
-html {
-    width: 100%;
-    height: 100%;
-}
-body {
-    width: 100%;
-    height: 100%;
-}
 div#viz-box {
     width: 100%;
     height: 100%;
     z-index: -1;
-}
-div#details {
-    width: 100%;
-    height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
-    pointer-events: none;
 }
 svg#detail-svg {
-    margin-left: calc(50% - 400px);
-    margin-right: calc(50% - 400px);
-    margin-top: 25%;
+    position: fixed;
+    top: calc(50% - 200px);
+    left: calc(50% - 400px);
+    pointer-events: none;
 }
 </style>
 </head>
 <body>
 <div id="viz-box">
-</div>
-<div id="details">
 </div>
 <script type="text/javascript">
 let _ORDER = [
@@ -179,7 +164,7 @@ var IN_DETAILS_VIEW = false;
 var height = 400;
 var width = 800;
 
-var svg = d3.select("#details")
+var svg = d3.select("body")
     .append("svg")
     .attr("height", height + "px")
     .attr("width", width + "px")
@@ -216,7 +201,7 @@ function makeGraphic(data) {
         .style("fill", "#f8de7e")
         .style("stroke", "brown");
 
-    let _e_scale_factor = 50;
+    let _e_scale_factor = 100;
     svg.selectAll("circle")
         .data(data)
         .enter()
@@ -308,7 +293,13 @@ d3.csv('./national_aggregates.csv', function(e, data) {
                         .attr("font-family", "sans-serif")
                         .style("font-weight", 700)
                         .style("text-anchor", "middle")
-                        .text(geo.properties.name);
+                        .text(geo.properties.name + " (N = " + data.total + ")");
+
+                    svg.append("text")
+                        .attr("x", 0)
+                        .attr("y", 145)
+                        .style("text-anchor", "middle")
+                        .text("(Circles represent error margins (CI = 99%), click anywhere to return to the map.)");
                     
                     svg.transition()
                         .duration(500)
