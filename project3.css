@@ -27,3 +27,14 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
+
+.tooltip {
+    background-color: lightgray;
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    pointer-events: none;
+    border: 0px;
+    border-radius: 3px;
+    font-size: 10px;
+}

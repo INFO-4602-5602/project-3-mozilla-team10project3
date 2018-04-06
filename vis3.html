@@ -26,7 +26,7 @@
           <option value="optimistic">Optimistic</option>
           <option value="excited">Excited</option>
         </select>
-        <div id="vis-2"></div>
+        <div id="vis-3"></div>
       </div>
 
       <div class="col-xs-2"></div>
@@ -34,6 +34,21 @@
   </div>
 
   <script type="text/javascript">
+
+    var tooltip = d3.select('#vis-3')
+        .append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
+
+    function toolTipMouseOver(d) {
+        tooltip.transition()
+            .duration(100)
+            .style('opacity', 0.9);
+        tooltip.html(
+            '<strong style="font-size: 14px">' + d.Country + "</strong><br>" + "<strong>Tech-Savvyness Score:</strong>" + ' <div style="color: #00D">' + parseFloat(d.Savvy).toFixed(2) + "</div>"
+        ).style('left', d3.event.pageX + 10 + 'px')
+            .style('top', d3.event.pageY + -10 + 'px');
+    }
 
     d3.selection.prototype.moveToFront = function() {
       return this.each(function(){
@@ -68,11 +83,11 @@
       y.domain([0, 1]);
 
       // Initializing svg
-      var svg = d3.select('#vis-2')
+      var svg = d3.select('#vis-3')
                        .append('svg')
                          .attr('width', width + margin.left + margin.right)
                          .attr('height', height + margin.top + margin.bottom)
-                         .attr('class', 'vis-2-svg')
+                         .attr('class', 'vis-3-svg')
                        .append('g')
                          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -115,6 +130,12 @@
             .attr("height", function(d) { return height - y(d.Percentage); })
             .attr("fill", function(d) {
               return color(d.Savvy);
+            })
+            .on('mouseover', function (d) { toolTipMouseOver(d); })
+            .on('mouseout', function (d) {
+              tooltip.transition()
+                .duration(200)
+                .style('opacity', 0);
             });
 
       // Rendering legend
@@ -129,7 +150,7 @@
         .attr("transform", "translate(80,38)");
 
       var legendLinear = d3.legendColor()
-        .title('Self Reported Tech Savvyness Score')
+        .title('Tech Savvyness Score (0 = Luddite, 3 = Nerd)')
         .cells(4)
         .shapeWidth(30)
         .orient('horizontal')
@@ -166,7 +187,7 @@
 
       d3.csv(file, function(error, data) {
 
-        d3.select('#vis-2').selectAll(".bar").data(data)
+        d3.select('#vis-3').selectAll(".bar").data(data)
               .transition()
                 .duration(1500)
                   .attr("class", "bar")
