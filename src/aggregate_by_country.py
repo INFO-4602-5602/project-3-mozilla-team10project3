@@ -59,19 +59,24 @@ for row in reader:
 #    print(k, v/total_country)
 
 print("Num. of countries: %i" % (len(country_responses)))
-for k, v in sorted(country_responses.items(), key=lambda x:x[1], reverse=True)[:50]:
+countries_top50 = sorted(country_responses.items(), key=lambda x:x[1], reverse=True)[:50]
+
+for k, v in sorted(countries_top50, key=lambda x:x[0]):
     #print(k, v)
     #print(country_responses_breakdown[k])
-    #if k == "India":
+    #if k == "New Zealand":
     for response, nums in country_responses_breakdown[k].items():
         sum_savvy_score = 0
         sum_savvy_people = 0
         percentage = nums/v
-        #print(response, nums/v)
+        #if response.startswith("Super"):
+        #    print(response, nums)
+        #    print(response, nums/v)
+        #    print(country_responses_breakdown_techsavvy_score[k][response])
         for savvy, savvy_people in country_responses_breakdown_techsavvy_score[k][response].items():
             sum_savvy_score += savvy_score_dic[savvy] * savvy_people
             sum_savvy_people += savvy_people
-        print("India avg. savvy score for response '%s': %.4f" % (response, sum_savvy_score/sum_savvy_people))
+        print("%s avg. savvy score for response '%s': %.4f" % (k, response, sum_savvy_score/sum_savvy_people))
         out_file_dic[response[:3]].write("%s" % (k.replace(",", "")))
         out_file_dic[response[:3]].write(",%.4f" % (percentage))
         out_file_dic[response[:3]].write(",%.4f" % (sum_savvy_score/sum_savvy_people))
