@@ -8,7 +8,7 @@ from iso3166 import countries
 pprint = pprint.PrettyPrinter(indent=2).pprint
 
 _CSV_IN = '../data/20171013111831-SurveyExport_TruncatedFields_Region.csv'
-_CSV_OUT = '../vis-wt/national_aggregates.csv'
+_CSV_OUT = '../vis-interactive-map/national_aggregates.csv'
 
 _NATIONAL = {}
 _DEFAULT = {
