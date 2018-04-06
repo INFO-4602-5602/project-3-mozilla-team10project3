@@ -1,15 +1,22 @@
 import csv
 from collections import defaultdict
 import pandas as pd
+import sys
 
 country2region = {}
 country2subregion = {}
+region2subregion = defaultdict(set)
 with open('../data/all.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         print(row['name'], row['region'], row['sub-region'])
         country2region[row['name']] = row['region']
         country2subregion[row['name']] = row['sub-region']
+        region2subregion[row['region']].add(row['sub-region'])
+
+for k, v in sorted(region2subregion.items(), key=lambda x:len(x[1])):
+    print(k, v)
+sys.exit(1)
 
 oov = set()
 country_dic = defaultdict(int)

@@ -11,15 +11,15 @@ import pandas as pd
 
 # CSV_nameExcited,Optimisitc,Fence,Warry,Scared,
 out_file_dic = {}
-f_exicted = open("excited.csv", "w")
+f_exicted = open("../data/tech_savvy/excited.csv", "w")
 out_file_dic["Sup"] = f_exicted
-f_optimistic = open("optimistic.csv", "w")
+f_optimistic = open("../data/tech_savvy/optimistic.csv", "w")
 out_file_dic["Cau"] = f_optimistic
-f_fence = open("fence.csv", "w")
+f_fence = open("../data/tech_savvy/fence.csv", "w")
 out_file_dic["On "] = f_fence
-f_warry = open("warry.csv", "w")
+f_warry = open("../data/tech_savvy/warry.csv", "w")
 out_file_dic["A l"] = f_warry
-f_scared = open("scared.csv", "w")
+f_scared = open("../data/tech_savvy/scared.csv", "w")
 out_file_dic["Sca"] = f_scared
 
 for k, v in out_file_dic.items():
@@ -72,7 +72,7 @@ for k, v in sorted(country_responses.items(), key=lambda x:x[1], reverse=True)[:
             sum_savvy_score += savvy_score_dic[savvy] * savvy_people
             sum_savvy_people += savvy_people
         print("India avg. savvy score for response '%s': %.4f" % (response, sum_savvy_score/sum_savvy_people))
-        out_file_dic[response[:3]].write("%s" % (k))
+        out_file_dic[response[:3]].write("%s" % (k.replace(",", "")))
         out_file_dic[response[:3]].write(",%.4f" % (percentage))
         out_file_dic[response[:3]].write(",%.4f" % (sum_savvy_score/sum_savvy_people))
         out_file_dic[response[:3]].write("\n")
