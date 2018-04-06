@@ -17,6 +17,7 @@
       <div class="col-xs-2"></div>
 
       <div class="col-xs-8" style="margin: 0 auto">
+        <div style="text-align: center; margin-top: 15px"><h3>Term Recognition Rates Across Regions and Sub-Regions</h3></div>
         <div id="vis-1"></div>
       </div>
 
@@ -26,6 +27,12 @@
 
   <script type="text/javascript">
 
+    d3.selection.prototype.moveToFront = function() {
+      return this.each(function(){
+        this.parentNode.appendChild(this);
+      });
+    };
+
     var data_file_names = [
       '../data/regions/region_term_recognition_Africa.csv',
       '../data/regions/region_term_recognition_Americas.csv',
@@ -34,142 +41,399 @@
       '../data/regions/region_term_recognition_Oceania.csv'
     ];
 
-    var region_names = {
-      0: "Africa",
-      1: "Americas",
-      2: "Asia",
-      3: "Europe",
-      4: "Oceania"
-    };
+    var region_line_classes = ['.line-africa', '.line-americas', '.line-asia', '.line-europe', '.line-oceania'];
 
-    var region_data = {
-      "Africa": [],
-      "Americas": [],
-      "Asia": [],
-      "Europe": [],
-      "Oceania": []
-    };
+    var term_names = ["VPN", "DDOS", "IOT", "Connected Devices", "Botnet", "Blockchain", "RFID", "Zero Day", "TOR"];
 
-    d3.csv(data_file_names[0], function(error, data) {
-      region_data[region_names[0]] = data;
+    var colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99"];
+
+    d3.csv(data_file_names[0], function(error_africa, data_africa) {
+      d3.csv(data_file_names[1], function(error_americas, data_americas) {
+        d3.csv(data_file_names[2], function(error_asia, data_asia) {
+          d3.csv(data_file_names[3], function(error_europe, data_europe) {
+            d3.csv(data_file_names[4], function(error_oceania, data_oceania) {
+
+              all_data = [data_africa, data_americas, data_asia, data_europe, data_oceania];
+
+              // Setting up the graph dimensions and margins
+              var margin = {top: 30, right: 30, bottom: 60, left: 60};
+              var width = 800 - margin.left - margin.right;
+              var height = 600 - margin.top - margin.bottom;
+
+              // Setting the ranges
+              var x = d3.scaleLinear().range([0, width]);
+              var y = d3.scaleLinear().range([height, 0]);
+
+              var x_axis = d3.axisBottom(x).tickFormat(function(d) { return term_names[d]; });
+              var y_axis = d3.axisLeft(y);
+
+              // Setting up the line function
+              var line_function = d3.line()
+                                        .x(function(d) { return x(parseInt(d.Term)); })
+                                        .y(function(d) { return y(parseFloat(d.Recognition_Rate)); })
+                                        .curve(d3.curveLinear);
+
+              // Adding padding for the axes
+              x.domain(d3.extent(data_africa, function(d) { return parseInt(d.Term); }));
+              y.domain([0, 1]);
+
+              // Initializing svg
+              var svg = d3.select('#vis-1')
+                               .append('svg')
+                                 .attr('width', width + margin.left + margin.right)
+                                 .attr('height', height + margin.top + margin.bottom)
+                                 .attr('class', 'vis-1-svg')
+                               .append('g')
+                                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+              svg.append('g')
+                        .attr('transform', 'translate(0, ' + height + ')')
+                        .attr('class', 'x-axis')
+                        .call(x_axis);
+
+              svg.append('g')
+                        .attr('class', 'y-axis')
+                        .call(y_axis);
+
+              svg.append('text')
+                        .attr('class', 'label')
+                        .text('Technical Term')
+                        .attr('x', (width/2))
+                        .attr('y', height + 40)
+                        .style('fill', '#090');
+
+              svg.append('text')
+                        .attr('class', 'label')
+                        .text('Recognition Rate')
+                        .attr('transform', 'rotate(-90)')
+                        .attr('x', -(height/2))
+                        .attr('y', -50)
+                        .style('fill', '#090');
+
+              for (var i = 0; i < all_data.length; i++) {
+                // svg.selectAll("svg")
+                //      .data(all_data[i])
+                //      .enter()
+                //      .append("circle")
+                //      .attr("cx", function(d) {
+                //        return x(parseInt(d.Term));
+                //      })
+                //      .attr("cy", function(d) {
+                //        return y(parseFloat(d.Recognition_Rate));
+                //      })
+                //      .attr("r", function(d) {
+                //        return 4; 
+                //      })
+                //      .attr("fill", colors[i]);
+
+                svg.append('path')
+                        .data(all_data[i])
+                        .attr('class', 'line ' + region_line_classes[i])
+                        .attr('d', line_function(all_data[i]))
+                        .style('stroke', colors[i])
+                        .style('stroke-width', '3')
+                        .on('click', function(d) {
+                          change_to_subregion_from_region(d.Region);
+                        })
+                        .on('mouseover', function(d) {
+                          var selected = d3.select(this);
+                          selected.moveToFront();
+                          selected.style('stroke-width', 10);
+                        })
+                        .on('mouseout', function(d) {
+                          d3.select(this).style('stroke-width', 3);
+                        });
+              }
+
+              var ordinal = d3.scaleOrdinal()
+                                .domain(['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'])
+                                .range(colors);
+
+              svg.append('g')
+                        .attr('class', 'legendOrdinal')
+                        .attr('transform', 'translate(20,7)');
+
+              var legendOrdinal = d3.legendColor()
+                                      .shape('path', d3.symbol().type(d3.symbolSquare).size(150)())
+                                      .shapePadding(5)
+                                      .labelOffset(35)
+                                      .labelAlign("start")
+                                      .scale(ordinal);
+
+              svg.select('.legendOrdinal')
+                        .call(legendOrdinal);
+            });
+          });
+        });
+      });
     });
 
-    d3.csv(data_file_names[1], function(error, data) {
-      region_data[region_names[1]] = data;
-    });
+    function change_to_subregion_from_region(region) {
 
-    d3.csv(data_file_names[2], function(error, data) {
-      region_data[region_names[2]] = data;
-    });
+      var sub_region_names = {
+        "Africa": ['Middle Africa', 'Northern Africa', 'Western Africa', 'Eastern Africa', 'Southern Africa'],
+        "Americas": ['Central America', 'Caribbean', 'South America', 'Northern America'],
+        "Asia": ['Eastern Asia', 'Southern Asia', 'Western Asia', 'Central Asia', 'South-Eastern Asia'],
+        "Europe": ['Northern Europe', 'Southern Europe', 'Eastern Europe', 'Western Europe'],
+        "Oceania": ['Melanesia', 'Australia', 'Polynesia', 'Micronesia']
+      };
 
-    d3.csv(data_file_names[3], function(error, data) {
-      region_data[region_names[3]] = data;
-    });
+      var sub_region_files = {
+        "Africa": ['../data/sub_regions/region_term_recognition_Middle_Africa.csv',
+                   '../data/sub_regions/region_term_recognition_Northern_Africa.csv',
+                   '../data/sub_regions/region_term_recognition_Western_Africa.csv',
+                   '../data/sub_regions/region_term_recognition_Eastern_Africa.csv',
+                   '../data/sub_regions/region_term_recognition_Southern_Africa.csv'],
 
-    d3.csv(data_file_names[4], function(error, data) {
-      region_data[region_names[4]] = data;
-    });
+        "Americas": ['../data/sub_regions/region_term_recognition_Central_America.csv',
+                     '../data/sub_regions/region_term_recognition_Caribbean.csv',
+                     '../data/sub_regions/region_term_recognition_South_America.csv',
+                     '../data/sub_regions/region_term_recognition_Northern_America.csv'],
 
-    var active_regions = [0, 1, 2, 3, 4];
+        "Asia": ['../data/sub_regions/region_term_recognition_Eastern_Asia.csv',
+                 '../data/sub_regions/region_term_recognition_Southern_Asia.csv',
+                 '../data/sub_regions/region_term_recognition_Western_Asia.csv',
+                 '../data/sub_regions/region_term_recognition_Central_Asia.csv',
+                 '../data/sub_regions/region_term_recognition_South-Eastern_Asia.csv'],
 
-    // Setting up the graph dimensions and margins
-    var margin = {top: 30, right: 30, bottom: 60, left: 60};
-    var width = 800 - margin.left - margin.right;
-    var height = 600 - margin.top - margin.bottom;
+        "Europe": ['../data/sub_regions/region_term_recognition_Northern_Europe.csv',
+                   '../data/sub_regions/region_term_recognition_Southern_Europe.csv',
+                   '../data/sub_regions/region_term_recognition_Eastern_Europe.csv',
+                   '../data/sub_regions/region_term_recognition_Western_Europe.csv'],
 
-    // Setting the ranges
-    var x = d3.scaleLinear().range([0, width]);
-    var y = d3.scaleLinear().range([height, 0]);
+        "Oceania": ['../data/sub_regions/region_term_recognition_Melanesia.csv',
+                    '../data/sub_regions/region_term_recognition_Australia_and_New_Zealand.csv',
+                    '../data/sub_regions/region_term_recognition_Polynesia.csv',
+                    '../data/sub_regions/region_term_recognition_Micronesia.csv']
+      };
 
-    var x_axis = d3.axisBottom(x);
-    var y_axis = d3.axisLeft(y);
+      if (region == "Africa" || region == "Asia") {
 
-    // Setting up the line function
-    var line_function = d3.line()
-                              .x(function(d) { return x(d.Term); })
-                              .y(function(d) { return y(d.Recognition_Rate); })
-                              .curve(d3.curveLinear);
+        d3.csv(sub_region_files[region][0], function(error1, data1) {
+          d3.csv(sub_region_files[region][1], function(error2, data2) {
+            d3.csv(sub_region_files[region][2], function(error3, data3) {
+              d3.csv(sub_region_files[region][3], function(error4, data4) {
+                d3.csv(sub_region_files[region][4], function(error5, data5) {
 
-    // Adding padding for the axes
-    x.domain(d3.extent(region_data[region_names[active_regions[0]]], function(d) { return parseInt(d.Term); }));
-    y.domain([0, 1]);
+                  all_data = [data1, data2, data3, data4, data5];
 
-    // Initializing svg
-    var svg = d3.select('#vis-1')
-                     .append('svg')
-                       .attr('width', width + margin.left + margin.right)
-                       .attr('height', height + margin.top + margin.bottom)
-                     .append('g')
-                       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                  // Setting up the graph dimensions and margins
+                  var margin = {top: 30, right: 30, bottom: 60, left: 60};
+                  var width = 800 - margin.left - margin.right;
+                  var height = 600 - margin.top - margin.bottom;
 
-    // Rendering everything
-    for (var i = 0; i < active_regions.length; i++) {
-      svg.append('path')
-              .attr('class', 'line')
-              .attr('d', line_function(region_data[region_names[active_regions[i]]]))
-              .style('stroke', '#00D')
-              .style('stroke-width', '4');
-    }
+                  // Setting the ranges
+                  var x = d3.scaleLinear().range([0, width]);
+                  var y = d3.scaleLinear().range([height, 0]);
 
-    svg.append('g')
-              .attr('transform', 'translate(0, ' + height + ')')
-              .attr('class', 'x-axis')
-              .call(x_axis);
+                  var x_axis = d3.axisBottom(x).tickFormat(function(d) { return term_names[d]; });
+                  var y_axis = d3.axisLeft(y);
 
-    svg.append('g')
-              .attr('class', 'y-axis')
-              .call(y_axis);
+                  // Setting up the line function
+                  var line_function = d3.line()
+                                            .x(function(d) { return x(parseInt(d.Term)); })
+                                            .y(function(d) { return y(parseFloat(d.Recognition_Rate)); })
+                                            .curve(d3.curveLinear);
 
-    svg.append('text')
-              .attr('class', 'label')
-              .text('Technical Term')
-              .attr('x', (width/2))
-              .attr('y', height + 40)
-              .style('fill', '#090');
+                  // Adding padding for the axes
+                  x.domain(d3.extent(data1, function(d) { return parseInt(d.Term); }));
+                  y.domain([0, 1]);
 
-    svg.append('text')
-              .attr('class', 'label')
-              .text('Recognition Rate')
-              .attr('transform', 'rotate(-90)')
-              .attr('x', -(height/2))
-              .attr('y', -50)
-              .style('fill', '#090');
+                  d3.select("svg").remove();
 
-    var ordinal = d3.scaleOrdinal()
-                      .domain(['1', '2'])
-                      .range(['#00D', '#0D0']);
+                  // Initializing svg
+                  var svg = d3.select('#vis-1')
+                                   .append('svg')
+                                     .attr('width', width + margin.left + margin.right)
+                                     .attr('height', height + margin.top + margin.bottom)
+                                     .attr('class', 'vis-1-svg')
+                                   .append('g')
+                                     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    svg.append('g')
-              .attr('class', 'legendOrdinal')
-              .attr('transform', 'translate(20,7)');
+                  svg.append('g')
+                            .attr('transform', 'translate(0, ' + height + ')')
+                            .attr('class', 'x-axis')
+                            .call(x_axis);
 
-    var legendOrdinal = d3.legendColor()
-                            .shape('path', d3.symbol().type(d3.symbolSquare).size(150)())
-                            .shapePadding(5)
-                            .scale(ordinal);
+                  svg.append('g')
+                            .attr('class', 'y-axis')
+                            .call(y_axis);
 
-    svg.select('.legendOrdinal')
-              .call(legendOrdinal);
+                  svg.append('text')
+                            .attr('class', 'label')
+                            .text('Technical Term')
+                            .attr('x', (width/2))
+                            .attr('y', height + 40)
+                            .style('fill', '#090');
 
-    function change_active_regions(regions) {
+                  svg.append('text')
+                            .attr('class', 'label')
+                            .text('Recognition Rate')
+                            .attr('transform', 'rotate(-90)')
+                            .attr('x', -(height/2))
+                            .attr('y', -50)
+                            .style('fill', '#090');
 
-        // Rescaling the axes
-        x.domain(region_data[0].values.map(function (d) { return d.day; }));
-        y.domain([0, 1]);
+                  for (var i = 0; i < all_data.length; i++) {
+                    // svg.selectAll("svg")
+                    //      .data(all_data[i])
+                    //      .enter()
+                    //      .append("circle")
+                    //      .attr("cx", function(d) {
+                    //        return x(parseInt(d.Term));
+                    //      })
+                    //      .attr("cy", function(d) {
+                    //        return y(parseFloat(d.Recognition_Rate));
+                    //      })
+                    //      .attr("r", function(d) {
+                    //        return 4; 
+                    //      })
+                    //      .attr("fill", colors[i]);
 
-        var svg = d3.select('#vis-1').transition();
+                    svg.append('path')
+                            .data(all_data[i])
+                            .attr('class', 'line ' + region_line_classes[i])
+                            .attr('d', line_function(all_data[i]))
+                            .style('stroke', colors[i])
+                            .style('stroke-width', '3');
+                  }
 
-        // loop
-        svg.select('.line')
-             .duration(1000)
-             .attr('d', line_function_females(data));
+                  var ordinal = d3.scaleOrdinal()
+                                    .domain(sub_region_names[region])
+                                    .range(colors);
 
-        svg.select('.x-axis')
-             .duration(1000)
-             .call(x_axis);
-        svg.select('.y-axis')
-             .duration(1000)
-             .call(y_axis);
+                  svg.append('g')
+                            .attr('class', 'legendOrdinal')
+                            .attr('transform', 'translate(20,7)');
+
+                  var legendOrdinal = d3.legendColor()
+                                          .shape('path', d3.symbol().type(d3.symbolSquare).size(150)())
+                                          .shapePadding(5)
+                                          .labelOffset(55)
+                                          .labelAlign("start")
+                                          .scale(ordinal);
+
+                  svg.select('.legendOrdinal')
+                            .call(legendOrdinal);
+
+                });
+              });
+            });
+          });
+        });
+
+      } else {
+
+        d3.csv(sub_region_files[region][0], function(error1, data1) {
+          d3.csv(sub_region_files[region][1], function(error2, data2) {
+            d3.csv(sub_region_files[region][2], function(error3, data3) {
+              d3.csv(sub_region_files[region][3], function(error4, data4) {
+                all_data = [data1, data2, data3, data4];
+
+                // Setting up the graph dimensions and margins
+                var margin = {top: 30, right: 30, bottom: 60, left: 60};
+                var width = 800 - margin.left - margin.right;
+                var height = 600 - margin.top - margin.bottom;
+
+                // Setting the ranges
+                var x = d3.scaleLinear().range([0, width]);
+                var y = d3.scaleLinear().range([height, 0]);
+
+                var x_axis = d3.axisBottom(x).tickFormat(function(d) { return term_names[d]; });
+                var y_axis = d3.axisLeft(y);
+
+                // Setting up the line function
+                var line_function = d3.line()
+                                          .x(function(d) { return x(parseInt(d.Term)); })
+                                          .y(function(d) { return y(parseFloat(d.Recognition_Rate)); })
+                                          .curve(d3.curveLinear);
+
+                // Adding padding for the axes
+                x.domain(d3.extent(data1, function(d) { return parseInt(d.Term); }));
+                y.domain([0, 1]);
+
+                d3.select("svg").remove();
+
+                // Initializing svg
+                var svg = d3.select('#vis-1')
+                                 .append('svg')
+                                   .attr('width', width + margin.left + margin.right)
+                                   .attr('height', height + margin.top + margin.bottom)
+                                   .attr('class', 'vis-1-svg')
+                                 .append('g')
+                                   .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+                svg.append('g')
+                          .attr('transform', 'translate(0, ' + height + ')')
+                          .attr('class', 'x-axis')
+                          .call(x_axis);
+
+                svg.append('g')
+                          .attr('class', 'y-axis')
+                          .call(y_axis);
+
+                svg.append('text')
+                          .attr('class', 'label')
+                          .text('Technical Term')
+                          .attr('x', (width/2))
+                          .attr('y', height + 40)
+                          .style('fill', '#090');
+
+                svg.append('text')
+                          .attr('class', 'label')
+                          .text('Recognition Rate')
+                          .attr('transform', 'rotate(-90)')
+                          .attr('x', -(height/2))
+                          .attr('y', -50)
+                          .style('fill', '#090');
+
+                for (var i = 0; i < all_data.length; i++) {
+                  // svg.selectAll("svg")
+                  //      .data(all_data[i])
+                  //      .enter()
+                  //      .append("circle")
+                  //      .attr("cx", function(d) {
+                  //        return x(parseInt(d.Term));
+                  //      })
+                  //      .attr("cy", function(d) {
+                  //        return y(parseFloat(d.Recognition_Rate));
+                  //      })
+                  //      .attr("r", function(d) {
+                  //        return 4; 
+                  //      })
+                  //      .attr("fill", colors[i]);
+
+                  svg.append('path')
+                          .data(all_data[i])
+                          .attr('class', 'line ' + region_line_classes[i])
+                          .attr('d', line_function(all_data[i]))
+                          .style('stroke', colors[i])
+                          .style('stroke-width', '3');
+                }
+
+                var ordinal = d3.scaleOrdinal()
+                                  .domain(sub_region_names[region])
+                                  .range(colors.slice(0, 4));
+
+                svg.append('g')
+                          .attr('class', 'legendOrdinal')
+                          .attr('transform', 'translate(20,7)');
+
+                var legendOrdinal = d3.legendColor()
+                                        .shape('path', d3.symbol().type(d3.symbolSquare).size(150)())
+                                        .shapePadding(5)
+                                        .labelOffset(55)
+                                        .labelAlign("start")
+                                        .scale(ordinal);
+
+                svg.select('.legendOrdinal')
+                          .call(legendOrdinal);
+              });
+            });
+          });
+        });
+
+      }
 
     }
 
