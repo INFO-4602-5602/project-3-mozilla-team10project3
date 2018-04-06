@@ -47,8 +47,8 @@
     });
 
     // Setting up the graph dimensions and margins
-    var margin = {top: 30, right: 30, bottom: 60, left: 60};
-    var width = 700 - margin.left - margin.right;
+    var margin = {top: 30, right: 30, bottom: 120, left: 60};
+    var width = 800 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
 
     color = d3.scaleLinear().domain([0,3])
@@ -58,7 +58,7 @@
     var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
     var y = d3.scaleLinear().range([height, 0]);
 
-    d3.csv("./data/scared.csv", function(error, data) {
+    d3.csv("./data/tech_savvy/scared.csv", function(error, data) {
 
       var x_axis = d3.axisBottom(x);
       var y_axis = d3.axisLeft(y);
@@ -79,7 +79,10 @@
       svg.append('g')
                 .attr('transform', 'translate(0, ' + height + ')')
                 .attr('class', 'x-axis')
-                .call(x_axis);
+                .call(x_axis)
+                .selectAll("text")
+                .attr("transform", "rotate(90) translate(10, -13)")
+                .attr("text-anchor", "start");
 
       svg.append('g')
                 .attr('class', 'y-axis')
@@ -89,7 +92,7 @@
                 .attr('class', 'label')
                 .text('Country')
                 .attr('x', (width/2))
-                .attr('y', height + 40)
+                .attr('y', height + 90)
                 .style('fill', '#090');
 
       svg.append('text')
@@ -142,19 +145,19 @@
       var file = 'no_file_chosen';
       switch (response) {
         case 'excited':
-          file = "./data/excited.csv";
+          file = "./data/tech_savvy/excited.csv";
           break;
         case 'optimistic':
-          file = "./data/optimistic.csv";
+          file = "./data/tech_savvy/optimistic.csv";
           break;
         case "fence":
-          file = "./data/fence.csv";
+          file = "./data/tech_savvy/fence.csv";
           break;
         case 'wary':
-          file = "./data/wary.csv";
+          file = "./data/tech_savvy/wary.csv";
           break;
         case 'scared':
-          file = "./data/scared.csv";
+          file = "./data/tech_savvy/scared.csv";
           break;
         default:
           console.log('THIS SHOULD NEVER HAPPEN!');
