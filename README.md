@@ -57,11 +57,11 @@ Bret - Visualization 1 design, documentation
 
 Bryan - Visualization 1 design, documentation, team organization
 
-Stephen - Programmer, designer
+Stephen - D3 programming, visualization 1 design
 
-William - Visualization 2 designer, programmer
+William - Visualization 2 designer, D3 and Python programming
 
-Yoshinari - Visualization 1 designer, data filtering, programming
+Yoshinari - Visualization 1 designer, data filtering in Python, D3 programming
 
 ## Above and Beyond
 Uncertainty - Shading in Visualization 2
