@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Explore IoT Term Knowledgr</title>
+<meta charset="utf-8" />
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<link   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="./datamaps.world.hires.min.js"></script>
+<style type="text/css">
+html {
+    width: 100%;
+    height: 100%;
+}
+body {
+    width: 100%;
+    height: 100%;
+}
+div#viz-box {
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+div#details {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+svg#detail-svg {
+    margin-left: calc(50% - 400px);
+    margin-right: calc(50% - 400px);
+    margin-top: 25%;
+}
+</style>
+</head>
+<body>
+<div id="viz-box">
+</div>
+<div id="details">
+</div>
+<script type="text/javascript">
+let _ORDER = [
+    'Botnet',
+    'Blockchain',
+    'DDOS',
+    'RFID',
+    'VPN',
+    'TOR',
+    'IoT',
+    'Connected Devices',
+    'Zero Day'
+];
+
+let _ROT = 40;
+let _NONAGON = [
+    {x:0,y:-100},
+    {x:-64,y:-77},
+    {x:-98,y:-17},
+    {x:-87,y:50},
+    {x:-34,y:94},
+    {x:34,y:94},
+    {x:87,y:50},
+    {x:98,y:-17},
+    {x:64,y:-77},
+];
+
+function dataToDistanceList(data) {
+    return [
+        data.botnet * 1.0 / data.total,
+        data.blockchain * 1.0 / data.total,
+        data.ddos * 1.0 / data.total,
+        data.rfid * 1.0 / data.total,
+        data.vpn * 1.0 / data.total,
+        data.tor * 1.0 / data.total,
+        data.iot * 1.0 / data.total,
+        data.condev * 1.0 / data.total,
+        data.zday * 1.0 / data.total,
+    ]
+}
+
+function makePoints(data) {
+    r = [];
+    var fixedPoints = nonpoints([1, 1, 1, 1, 1, 1, 1, 1, 1])
+    var dataPoints = nonpoints(dataToDistanceList(data));
+    var errorMargins = emargins(data);
+
+    for (var i = 0; i < _ORDER.length; i++) {
+        r[i] = {
+            label : _ORDER[i],
+            x : fixedPoints[i].x,
+            y : fixedPoints[i].y,
+            dX : dataPoints[i].x,
+            dY : dataPoints[i].y,
+            p : ((dataPoints[i].y / fixedPoints[i].y) * 100).toFixed(2),
+            e : errorMargins[i]
+        };
+    }
+
+    return r;
+}
+
+// Replace this with a Z* value for a desired confidence interval,
+// here 99%
+let _Z_STAR = 2.58;
+function emargins(d) {
+    let n = d.total;
+    let getem = function (pn) {
+        let p = pn*1.0/n;
+        return _Z_STAR * Math.sqrt((p*(1-p))/n)
+    }
+    return [
+        getem(d.botnet),
+        getem(d.blockchain),
+        getem(d.ddos),
+        getem(d.rfid),
+        getem(d.vpn),
+        getem(d.tor),
+        getem(d.iot),
+        getem(d.condev),
+        getem(d.zday),
+    ];
+}
+
+function nonpoints(distances) {
+    points = []
+    for (var i = 0; i < 9; i++) {
+        points[i] = {
+            x : distances[i]*_NONAGON[i].x,
+            y : distances[i]*_NONAGON[i].y
+        }
+    }
+    return points;
+}
+
+function nonagon(distances) {
+    pointsText = ""
+    points = nonpoints(distances);
+    
+    for (var i = 0; i < 9; i++) {
+        if (i > 0) {
+            pointsText += " ";
+        }
+        pointsText += points[i].x + "," + points[i].y;
+    }
+
+    return pointsText;
+}
+
+function regularNonagon() {
+    return nonagon([1, 1, 1, 1, 1, 1, 1, 1, 1]);
+}
+
+function extractNonagon(data) {
+    r = ""
+    for (var i = 0; i < data.length; i++) {
+        r += data[i].dX + ',' + data[i].dY;
+        if (i < data.length -1) r += " ";
+    }
+    return r;
+}
+
+var MAP = undefined;
+var MAPDATA = undefined;
+var IN_DETAILS_VIEW = false;
+
+var height = 400;
+var width = 800;
+
+var svg = d3.select("#details")
+    .append("svg")
+    .attr("height", height + "px")
+    .attr("width", width + "px")
+    .attr("id", "detail-svg")
+    .append("g")
+    .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+    .style('opacity', 0);
+
+svg.append("polygon")
+    .attr('id', 'fixed')
+    .attr("points", regularNonagon())
+    .style("fill", "#d3d3d3")
+    .style("stroke", "black");
+
+function makeGraphic(data) {
+    svg.select('polygon#data').remove();
+    svg.selectAll('text').remove();
+    svg.selectAll('circle').remove();
+    svg.selectAll('line').remove();
+
+    svg.selectAll("line")
+        .data(data)
+        .enter()
+        .append("line")
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", function(d) { return d.x; })
+        .attr("y2", function(d) { return d.y; })
+        .style("stroke", "black");
+
+    svg.append("polygon")
+        .attr("id", "data")
+        .attr("points", extractNonagon(data))
+        .style("fill", "#f8de7e")
+        .style("stroke", "brown");
+
+    let _e_scale_factor = 50;
+    svg.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "epoint")
+        .attr("r", function(d) { return d.e * _e_scale_factor})
+        .attr("cx", function(d) { return d.dX; })
+        .attr("cy", function(d) { return d.dY; })
+        .style("fill", "brown");
+
+    svg.selectAll("text")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("x", function(d) { return d.x * 1.1; })
+        .attr("y", function(d) { return d.y * 1.1 + 6; })
+        .style("text-anchor", function(d) { return d.x == 0 ? "middle" : d.x < 0 ? "end" : "start"; })
+        .text(function(d) { return d.label + " (" + d.p + "%)"; });
+
+    svg.append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", 2.5)
+    .style("fill", "black");
+}
+d3.csv('./national_aggregates.csv', function(e, data) {
+    if (e != null) throw e;
+
+    mapdata = {}
+    for (var i = 0; i < data.length; i++) {
+        data[i].botnet = +data[i].botnet;
+        data[i].blockchain = +data[i].blockchain;
+        data[i].rfid = +data[i].rfid;
+        data[i].vpn = +data[i].vpn;
+        data[i].tor = +data[i].tor;
+        data[i].iot = +data[i].iot;
+        data[i].zday = +data[i].zday;
+        data[i].condev = +data[i].condev;
+        data[i].total = +data[i].total;
+        mapdata[data[i].iso] = data[i];
+    }
+
+    MAPDATA = mapdata;
+
+    var extent = d3.extent(data, function(d) { return d.total; });
+    console.log(extent);
+    var color = d3.scale.linear()
+        .domain([0, extent[1]])
+        .range(['#fff7bc', '#d95f0e']);
+
+    choropleth = {};
+    for (var i = 0; i < data.length; i++) {
+        choropleth[data[i].iso] = color(data[i].total);
+    }
+    console.log(choropleth)
+    
+    MAP = new Datamap({
+        element: document.getElementById("viz-box"),
+        projection: 'mercator',
+        fills: {
+            defaultFill: "#D3D3D3",
+        },
+        data: MAPDATA,
+        geographyConfig : {
+            popupTemplate: function (geo, data) {
+                return '<div class="hoverinfo"><b>' + geo.properties.name +
+                '</b><br />' + (data != null ? ('N = ' + data.total) : 'No Data') + '</div>';
+            }
+        },
+        done: function(datamap) {
+            datamap.svg.selectAll(".datamaps-subunit").on("click", function (geo) {
+                if (IN_DETAILS_VIEW) return;
+                let data = MAPDATA[geo.properties.iso];
+                console.log(data);
+                if (data != null) {
+                    d3.select('svg.datamap')
+                        .transition()
+                        .duration(500)
+                        .style('opacity', 0.15);
+                    MAP.options.geographyConfig.popupOnHover = false;
+
+                    // Display center thing
+                    makeGraphic(makePoints(data));
+
+                    svg.append("text")
+                        .attr("x", 0)
+                        .attr("y", -140)
+                        .attr("font-size", 36)
+                        .attr("font-family", "sans-serif")
+                        .style("font-weight", 700)
+                        .style("text-anchor", "middle")
+                        .text(geo.properties.name);
+                    
+                    svg.transition()
+                        .duration(500)
+                        .style('opacity', 1)
+                        .each('end', function() { IN_DETAILS_VIEW = true; });
+
+                }
+            });
+        }
+    });
+    MAP.updateChoropleth(choropleth);
+});
+
+$(window).click(function () {
+    if (IN_DETAILS_VIEW) {
+        d3.select('svg.datamap')
+            .transition()
+            .duration(500)
+            .style('opacity', 1);
+
+        MAP.options.geographyConfig.popupOnHover = true;
+
+        svg.transition()
+            .duration(500)
+            .style('opacity', 0)
+            .each('end', function() { IN_DETAILS_VIEW = false; });
+    }
+});
+</script>
+</body>
+</html>
