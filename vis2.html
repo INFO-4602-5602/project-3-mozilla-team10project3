@@ -1,0 +1,185 @@
+<html>
+
+<head>
+  <title>Project 3</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+  <link rel="stylesheet" type="text/css" href="project3.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="d3-legend.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-2"></div>
+
+      <div class="col-xs-8" style="margin: 0 auto">
+        <div style="text-align: center; margin-top: 15px"><h5>Feelings Towards a Connected Future Across Countries<br>Broken Down by Tech-Savvyness</h5></div>
+        <div><strong style="font-size: 14px">Select Feeling</strong></div>
+        <select id="response-select" class="form-control">
+          <option value="scared">Scared</option>
+          <option value="wary">Wary</option>
+          <option value="fence">On The Fence</option>
+          <option value="optimistic">Optimistic</option>
+          <option value="excited">Excited</option>
+        </select>
+        <div id="vis-2"></div>
+      </div>
+
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+    d3.selection.prototype.moveToFront = function() {
+      return this.each(function(){
+        this.parentNode.appendChild(this);
+      });
+    };
+
+    $('#response-select').change(function() {
+      var selected_response = $(this).val()
+      change_response(selected_response);
+    });
+
+    // Setting up the graph dimensions and margins
+    var margin = {top: 30, right: 30, bottom: 60, left: 60};
+    var width = 700 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    color = d3.scaleLinear().domain([0,3])
+                      .interpolate(d3.interpolateHcl)
+                      .range([d3.rgb('#00ffff'), d3.rgb("#0028c2")]);
+    // Setting the ranges
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+    var y = d3.scaleLinear().range([height, 0]);
+
+    d3.csv("./data/scared.csv", function(error, data) {
+
+      var x_axis = d3.axisBottom(x);
+      var y_axis = d3.axisLeft(y);
+
+      // Adding padding for the axes
+      x.domain(data.map(function(d) { return d.Country; }));
+      y.domain([0, 1]);
+
+      // Initializing svg
+      var svg = d3.select('#vis-2')
+                       .append('svg')
+                         .attr('width', width + margin.left + margin.right)
+                         .attr('height', height + margin.top + margin.bottom)
+                         .attr('class', 'vis-2-svg')
+                       .append('g')
+                         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+      svg.append('g')
+                .attr('transform', 'translate(0, ' + height + ')')
+                .attr('class', 'x-axis')
+                .call(x_axis);
+
+      svg.append('g')
+                .attr('class', 'y-axis')
+                .call(y_axis);
+
+      svg.append('text')
+                .attr('class', 'label')
+                .text('Country')
+                .attr('x', (width/2))
+                .attr('y', height + 40)
+                .style('fill', '#090');
+
+      svg.append('text')
+                .attr('class', 'label')
+                .text('Percentage')
+                .attr('transform', 'rotate(-90)')
+                .attr('x', -(height/2))
+                .attr('y', -50)
+                .style('fill', '#090');
+
+      // Rendering bars
+      var bars = svg.selectAll("rect.bar")
+                      .data(data);
+
+      bars.enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.Country); })
+            .attr("y", function(d) { return y(d.Percentage); })
+            .attr("width", x.bandwidth())
+            .attr("height", function(d) { return height - y(d.Percentage); })
+            .attr("fill", function(d) {
+              return color(d.Savvy);
+            });
+
+      // Rendering legend
+      var linear = d3.scaleLinear()
+        .domain([0,3])
+        .range(["#00ffff", "#0028c2"]);
+
+      var svg = d3.select("svg");
+
+      svg.append("g")
+        .attr("class", "legendLinear")
+        .attr("transform", "translate(80,38)");
+
+      var legendLinear = d3.legendColor()
+        .title('Self Reported Tech Savvyness Score')
+        .cells(4)
+        .shapeWidth(30)
+        .orient('horizontal')
+        .scale(linear);
+
+      svg.select(".legendLinear")
+        .call(legendLinear);
+
+    });
+
+    function change_response(response) {
+
+      var file = 'no_file_chosen';
+      switch (response) {
+        case 'excited':
+          file = "./data/excited.csv";
+          break;
+        case 'optimistic':
+          file = "./data/optimistic.csv";
+          break;
+        case "fence":
+          file = "./data/fence.csv";
+          break;
+        case 'wary':
+          file = "./data/wary.csv";
+          break;
+        case 'scared':
+          file = "./data/scared.csv";
+          break;
+        default:
+          console.log('THIS SHOULD NEVER HAPPEN!');
+          break;
+      }
+
+      d3.csv(file, function(error, data) {
+
+        d3.select('#vis-2').selectAll(".bar").data(data)
+              .transition()
+                .duration(1500)
+                  .attr("class", "bar")
+                  .attr("x", function(d) { return x(d.Country); })
+                  .attr("y", function(d) { return y(d.Percentage); })
+                  .attr("width", x.bandwidth())
+                  .attr("height", function(d) { return height - y(d.Percentage); })
+                  .attr("fill", function(d) {
+                    return color(d.Savvy);
+                  });
+
+      });      
+
+    }
+
+  </script>
+</body>
+
+</html>
