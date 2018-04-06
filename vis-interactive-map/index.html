@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Explore IoT Term Knowledgr</title>
+<title>Explore IoT Term Knowledge</title>
 <meta charset="utf-8" />
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -17,13 +17,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script src="./datamaps.world.hires.min.js"></script>
 <style type="text/css">
+html {
+    width: 100%;
+    height: 100%;
+}
+body {
+    width: 100%;
+    height: 100%;
+    padding-left: 15%;
+    padding-right: 15%;
+}
 div#viz-box {
     width: 100%;
     height: 100%;
-    z-index: -1;
-    position: fixed;
-    top: 0;
-    left: 0;
 }
 svg#detail-svg {
     position: fixed;
@@ -264,6 +270,7 @@ d3.csv('./national_aggregates.csv', function(e, data) {
         fills: {
             defaultFill: "#D3D3D3",
         },
+        responsive: true,
         data: MAPDATA,
         geographyConfig : {
             popupTemplate: function (geo, data) {
@@ -327,6 +334,10 @@ $(window).click(function () {
             .style('opacity', 0)
             .each('end', function() { IN_DETAILS_VIEW = false; });
     }
+});
+
+window.addEventListener('resize', function(event){
+    MAP.resize();
 });
 </script>
 </body>
