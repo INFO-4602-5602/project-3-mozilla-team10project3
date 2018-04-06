@@ -87,3 +87,4 @@ for region in sub_region_dic:
 for region in region_dic:
     csv_file = open("../data/regions/region_term_recognition_%s.csv" % region.replace(" ", "_"), "w")
     create_region_csvs(csv_file, region, region_dic)
+
