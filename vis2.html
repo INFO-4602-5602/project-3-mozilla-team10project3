@@ -81,8 +81,8 @@
                 .attr('class', 'x-axis')
                 .call(x_axis)
                 .selectAll("text")
-                .attr("transform", "rotate(90) translate(10, -13)")
-                .attr("text-anchor", "start");
+                .attr("transform", "rotate(-90) translate(-10, -13)")
+                .attr("text-anchor", "end");
 
       svg.append('g')
                 .attr('class', 'y-axis')
@@ -92,12 +92,12 @@
                 .attr('class', 'label')
                 .text('Country')
                 .attr('x', (width/2))
-                .attr('y', height + 90)
+                .attr('y', height + 80)
                 .style('fill', '#090');
 
       svg.append('text')
                 .attr('class', 'label')
-                .text('Percentage')
+                .text('Percentage of Respondents')
                 .attr('transform', 'rotate(-90)')
                 .attr('x', -(height/2))
                 .attr('y', -50)
