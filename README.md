@@ -9,7 +9,7 @@ Yoshinari Fujinuma
 Over spring break, we worked individually to look at the data and other information from Mozilla to get an understanding of what we were working on. Throughout the week we met as a full group after class to touch base and get on the same page, in various combinations of groups to brainstorm, design, and prototype the visualizations, and also worked individually to ultimately create the three visualizations. We also collaborated through email for most communication. 
 
 ### Running Visualizations
-Launch a http server from our project directory, navigate to the respective visualization files (vis1.html, vis2.html from the top level of the repository, and index.html from within the vis-interactive-map folder), open the .html file. See individual descriptions for further information on each vis' interactions.
+Launch a http server from our project directory, navigate to the respective visualization files (vis1.html, vis2.html from the top level of the repository, and index.html from within the vis2-interactive-map folder), open the .html file. See individual descriptions for further information on each vis' interactions.
 
 ## Visualization Descriptions
 ### Visualization 1 - Term Recognition Rates Across Regions and Sub-Regions
@@ -26,7 +26,7 @@ Prototyping the vis with all 22 regions resulted in complete spaghetti with no m
 
 We built the visualization using D3 and CSV files processed in Python. We used [colorbrewer.com](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) to determine the color palette. In building the visualization we ran into typical bugs such as handling asynchronous function calls correctly and managing multidimensional dictionaries.
 
-Once the visualization was working to display the regional breakdown we incorporated the interaction of clicking the lines display that regions' sub-regions. After the click interaction was working, we incorporated easier interaction by creating a mouseover function that increased the line size to help the user click the line they were intending.
+Once the visualization was working to display the regional breakdown we incorporated the interaction of clicking the lines display that regions' sub-regions. After the click interaction was working, we incorporated easier interaction by creating a mouseover function that increased the line size to help the user click the line they were intending. Although not incorporated in the vis, figuing out a better way to sort the x-axis and adding a tooltip that displays the countries in each sub-region would enhance the visualization. 
 
 #### How to view
 Hover over and click individual lines to display sub-regional data. Click the refresh in browser to return to the regional breakdown. 
@@ -57,8 +57,6 @@ Once we had the visualization in mind we split into 2 groups, one working on the
 To prepare the data we used Python to filter, calculate, sort, and finally output 5 CSV files, 1 for each response. We first calculated the overall percentage of respondents per each country selecting each of the 5 options. We checked our results against Mozilla's, and although different, we were in the same ballpark, and suspect our dataset has a different number of entries than what they used for their analysis. 
 
 Once we had the percentage of each answer for each country, we calculated a savvy score for the respondents within that answer using a weighted average and assigning each savviness a number from 0-3 and dividing by the total number of respondents for that answer per country. With the 2 measures we needed for the vis, we exported 5 CSVs, one for each potential answer to the feelings question, containing country, percentage of respondents, and savvy score for that set per country. 
-
-On the D3 side....
 
 Once both the data and D3 template were ready, we imported the data. We explored different gradients and other design features but decided to keep the gradient and basic design from the original idea. 
 
