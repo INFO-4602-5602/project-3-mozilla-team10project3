@@ -12,7 +12,7 @@ Over spring break, we worked individually to look at the data and other informat
 Launch a http server from our project directory, navigate to the respective visualization files (vis1.html, vis2.html from the top level of the repository, and index.html from within the vis-interactive-map folder), open the .html file. See individual descriptions for further information on each vis' interactions.
 
 ## Visualization Descriptions
-### Visualization 1 - Regional Breakdown of Known Terms
+### Visualization 1 - Term Recognition Rates Across Regions and Sub-Regions
 This visualization displays the percentage of respondents to the Mozilla survey who understand the nine terms about the internet asked in the survey. The respondents are divided into regions and sub-regions, as determined by the United Nations. The user can view a breakdown of each region by clicking that line to display the sub-regions of that region. 
 
 #### Design Process
@@ -31,7 +31,7 @@ Once the visualization was working to display the regional breakdown we incorpor
 #### How to view
 Hover over and click individual lines to display sub-regional data. Click the refresh in browser to return to the regional breakdown. 
 
-### Visualization 2 - Country Breakdown of Known Terms, countries with over 100 entries
+### Visualization 2 - Explore IoT Term Knowledge
 This visualization displays a geographical tool that allows the user to explore an individual country's understanding of know computer terms from the Mozilla survey. The main view color codes countries with data from yellow to red with countries with more responses being more red, and lass being more yellow. Grey signals no data. The user can mouseover individual countries to display that country's total count of responses in a tooltip. Clicking shows a 9-sided figure for that country which displays what terms that country understands by percentage of respondents for each term. Eighty-six countries' data are shown since not all countries have data and countries with less than 100 results were filtered out.
 
 #### Design Process
@@ -44,8 +44,7 @@ One design challenge was zoom and how the projection hindered some clarity in se
 #### How to view
 Mouseover each country to highlight and display the tooltip. Click each country to display the individual statistics for that country.
 
-
-### Visualization 3 - 
+### Visualization 3 - Feelings Towards a Connected Future Across Countries, Broken Down by Tech-Savvyness
 This visualization displays the breakdown of how feel towards a connected future as asked in the Mozilla survey. Each of the 5 potential answers, from scared to excited, can be selected, displaying the percentage of respondents from each country selecting that answer, with the gradient of color displaying the self-reported tech-savviness of those users responding.  Fifty countries with the most total respondents are displayed.
 
 #### Design Process
